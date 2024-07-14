@@ -1,0 +1,12 @@
+{
+  "name": "noteflow",
+  "version": "1.0.0",
+  "description": "Note-taking Chrome extension designed to help users capture, organize, and manage their browser notes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -5,9 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const newCategoryInput = document.getElementById('newCategory');
     const addCategoryBtn = document.getElementById('addCategoryBtn');
     const savedNotesContainer = document.getElementById('savedNotes');
+    const emptyState = document.getElementById('emptyState');
   
     addCategoryBtn.addEventListener('click', () => {
-      const newCategory = newCategoryInput.value;
+      const newCategory = newCategoryInput.value.trim();
       if (newCategory) {
         addCategoryToStorage(newCategory);
         newCategoryInput.value = '';
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     saveBtn.addEventListener('click', () => {
-      const note = noteInput.value;
+      const note = noteInput.value.trim();
       const category = categorySelect.value;
       if (note && category) {
         saveNoteToStorage(note, category);
@@ -39,7 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.storage.sync.get('notes', (data) => {
         const notes = data.notes || [];
         notes.push({ note, category });
-        chrome.storage.sync.set({ notes });
+        chrome.storage.sync.set({ notes }, displaySavedNotes);
+      });
+    }
+  
+    function removeNoteFromStorage(index) {
+      chrome.storage.sync.get('notes', (data) => {
+        const notes = data.notes || [];
+        notes.splice(index, 1);
+        chrome.storage.sync.set({ notes }, displaySavedNotes);
       });
     }
   
@@ -60,11 +69,28 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.storage.sync.get('notes', (data) => {
         const notes = data.notes || [];
         savedNotesContainer.innerHTML = '';
-        notes.forEach((noteObj) => {
-          const noteElement = document.createElement('div');
-          noteElement.textContent = `${noteObj.category}: ${noteObj.note}`;
-          savedNotesContainer.appendChild(noteElement);
-        });
+        if (notes.length === 0) {
+          emptyState.style.display = 'block';
+        } else {
+          emptyState.style.display = 'none';
+          notes.forEach((noteObj, index) => {
+            const noteElement = document.createElement('div');
+            noteElement.classList.add('note-item');
+            noteElement.innerHTML = `
+              <span class="note-category">${noteObj.category}:</span>
+              <span class="note-content">${noteObj.note}</span>
+              <span class="note-remove" data-index="${index}">✖</span>
+            `;
+            savedNotesContainer.appendChild(noteElement);
+          });
+  
+          document.querySelectorAll('.note-remove').forEach(btn => {
+            btn.addEventListener('click', (event) => {
+              const index = event.target.getAttribute('data-index');
+              removeNoteFromStorage(index);
+            });
+          });
+        }
       });
     }
   

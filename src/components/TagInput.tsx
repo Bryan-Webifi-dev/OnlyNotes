@@ -30,11 +30,15 @@ const TagInput: React.FC<TagInputProps> = ({ tags, setTags }) => {
         value={tagInput}
         onChange={(e) => setTagInput(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && addTag()}
+        bg="white"
+        boxShadow="md"
+        textColor="black" 
+        _placeholder={{ color: 'gray.500' }}      
       />
       <IconButton icon={<AddIcon />} onClick={addTag} marginTop={2} aria-label={''} />
       <Wrap spacing={2} marginTop={2}>
         {tags.map(tag => (
-          <Tag key={tag} size="sm" borderRadius="full" variant="solid" colorScheme="blue">
+          <Tag key={tag} size="sm" borderRadius="full" variant="solid" colorScheme="blue" boxShadow="md">
             <TagLabel>{tag}</TagLabel>
             <TagCloseButton onClick={() => removeTag(tag)} />
           </Tag>

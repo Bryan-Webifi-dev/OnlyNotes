@@ -14,9 +14,9 @@ const TagInput = ({ tags, setTags }) => {
         setTags(tags.filter(t => t !== tag));
     };
     return (React.createElement(Box, null,
-        React.createElement(Input, { placeholder: "Add a tag", value: tagInput, onChange: (e) => setTagInput(e.target.value), onKeyDown: (e) => e.key === 'Enter' && addTag() }),
+        React.createElement(Input, { placeholder: "Add a tag", value: tagInput, onChange: (e) => setTagInput(e.target.value), onKeyDown: (e) => e.key === 'Enter' && addTag(), bg: "white", boxShadow: "md", textColor: "black", _placeholder: { color: 'gray.500' } }),
         React.createElement(IconButton, { icon: React.createElement(AddIcon, null), onClick: addTag, marginTop: 2, "aria-label": '' }),
-        React.createElement(Wrap, { spacing: 2, marginTop: 2 }, tags.map(tag => (React.createElement(Tag, { key: tag, size: "sm", borderRadius: "full", variant: "solid", colorScheme: "blue" },
+        React.createElement(Wrap, { spacing: 2, marginTop: 2 }, tags.map(tag => (React.createElement(Tag, { key: tag, size: "sm", borderRadius: "full", variant: "solid", colorScheme: "blue", boxShadow: "md" },
             React.createElement(TagLabel, null, tag),
             React.createElement(TagCloseButton, { onClick: () => removeTag(tag) })))))));
 };

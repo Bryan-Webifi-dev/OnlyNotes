@@ -11,7 +11,9 @@ type SearchBarProps = {
 
 const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery }) => {
   return (
-    <InputGroup>
+    <InputGroup
+      size="sm"
+    >
       <InputLeftElement pointerEvents="none">
         <SearchIcon color="gray.300" />
       </InputLeftElement>
@@ -20,6 +22,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery }) =>
         placeholder="Search notes..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
+        bg="white"
+        boxShadow="md"
+        textColor="black" 
+        _placeholder={{ color: 'gray.500' }}
+        size="sm"
       />
     </InputGroup>
   );

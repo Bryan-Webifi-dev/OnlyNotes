@@ -17,7 +17,7 @@ import {
   VStack,
   IconButton,
 } from '@chakra-ui/react';
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 type CategoryDrawerProps = {
   categories: string[];
@@ -38,21 +38,30 @@ const CategoryDrawer: React.FC<CategoryDrawerProps> = ({ categories, addCategory
 
   return (
     <>
-      <Button onClick={onOpen} leftIcon={<AddIcon />}>
-        Manage Categories
+      <Button onClick={onOpen} size="sm" fontSize="sm">
+        Menu
       </Button>
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay>
           <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader>Manage Categories</DrawerHeader>
-            <DrawerBody>
+            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerBody
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+              height="calc(100% - 4rem)"
+            >
               <FormControl>
                 <FormLabel>New Category</FormLabel>
                 <Input
                   placeholder="New category"
                   value={newCategory}
                   onChange={(e) => setNewCategory(e.target.value)}
+                  bg="white"
+                  boxShadow="md"
+                  textColor="black" 
+                  _placeholder={{ color: 'gray.500' }}
                 />
                 <Button onClick={handleAddCategory} marginTop={2}>
                   Add Category

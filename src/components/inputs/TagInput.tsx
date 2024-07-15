@@ -1,14 +1,25 @@
-// src/components/TagInput.tsx
-
+/**
+ * @module TagInput
+ * @description Input for adding tags
+ */
 import React, { useState } from 'react';
 import { Input, Box, IconButton, Tag, TagLabel, TagCloseButton, Wrap } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
+/**
+ * @typedef TagInputProps
+ * @property {string[]} tags - The list of tags
+ * @property {(tags: string[]) => void} setTags - Function to set tags
+ */
 type TagInputProps = {
   tags: string[];
   setTags: (tags: string[]) => void;
 };
 
+/**
+ * Input for adding tags
+ * @param {TagInputProps} props - The component properties
+ */
 const TagInput: React.FC<TagInputProps> = ({ tags, setTags }) => {
   const [tagInput, setTagInput] = useState('');
 
@@ -48,4 +59,4 @@ const TagInput: React.FC<TagInputProps> = ({ tags, setTags }) => {
   );
 };
 
-export default TagInput;
+export { TagInput };

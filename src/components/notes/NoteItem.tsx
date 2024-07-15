@@ -1,6 +1,20 @@
+/**
+ * @module NoteItem
+ * @description A single note item
+ */
 import React from 'react';
 import { Box, Text, Stack, Badge, Wrap, Tag } from '@chakra-ui/react';
 
+/**
+ * @typedef NoteItemProps
+ * @property {string} note - The note text
+ * @property {string} category - The category
+ * @property {string} timestamp - The timestamp
+ * @property {string[]} tags - The tags
+ * @property {string} folder - The folder
+ * @property {() => void} onClick - Function to handle click event
+ * @returns {JSX.Element}
+ */
 type NoteItemProps = {
   note: string;
   category: string;
@@ -10,6 +24,10 @@ type NoteItemProps = {
   onClick: () => void;
 };
 
+/**
+ * A single note item
+ * @param {NoteItemProps} props - The component properties
+ */
 const NoteItem: React.FC<NoteItemProps> = ({ note, category, timestamp, tags, folder, onClick }) => {
   return (
     <Box borderWidth="1px" borderColor="gray.300" borderRadius="lg" padding={4} boxShadow="md" onClick={onClick} cursor="pointer">
@@ -30,5 +48,5 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, category, timestamp, tags, fo
   );
 };
 
-export default NoteItem;
+export { NoteItem };
 

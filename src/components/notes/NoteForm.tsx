@@ -1,9 +1,24 @@
-// src/components/NoteForm.tsx
-
+/**
+ * @module NoteForm
+ * @description Form for creating and updating notes
+ */
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Input, Textarea, Select, FormControl, FormLabel, useToast } from '@chakra-ui/react';
-import TagInput from './TagInput';
+import{ TagInput } from '../inputs';
 
+/**
+ * @typedef NoteFormProps
+ * @property {string[]} categories - The list of categories
+ * @property {string[]} folders - The list of folders
+ * @property {(note: string, category: string, tags: string[], folder: string) => void} saveNote - Function to save a note
+ * @property {string} [note=''] - The note text
+ * @property {string} [category=''] - The category
+ * @property {string[]} [tags=[]] - The tags
+ * @property {string} [folder=''] - The folder
+ * @property {() => void} onClose - Function to close the form
+ * @property {() => void} [deleteNote] - Function to delete the note
+ * @returns {JSX.Element}
+ */
 type NoteFormProps = {
   categories: string[];
   folders: string[];
@@ -16,6 +31,10 @@ type NoteFormProps = {
   deleteNote?: () => void;
 };
 
+/**
+ * Form for creating and updating notes
+ * @param {NoteFormProps} props - The component properties
+ */
 const NoteForm: React.FC<NoteFormProps> = ({ categories, folders, saveNote, note = '', category = '', tags = [], folder = '', onClose, deleteNote }) => {
   const [noteText, setNoteText] = useState(note);
   const [selectedCategory, setSelectedCategory] = useState(category);
@@ -113,4 +132,4 @@ const NoteForm: React.FC<NoteFormProps> = ({ categories, folders, saveNote, note
   );
 };
 
-export default NoteForm;
+export { NoteForm };

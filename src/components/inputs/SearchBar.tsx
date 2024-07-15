@@ -1,14 +1,25 @@
-// src/components/SearchBar.tsx
-
+/**
+ * @module SearchBar
+ * @description A search bar component
+ */
 import React from 'react';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 
+/**
+ * @typedef SearchBarProps
+ * @property {string} searchQuery - The search query
+ * @property {(query: string) => void} setSearchQuery - Function to set the search query
+ */
 type SearchBarProps = {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 };
 
+/**
+ * A search bar component
+ * @param {SearchBarProps} props - The component properties
+ */
 const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery }) => {
   return (
     <InputGroup
@@ -32,4 +43,4 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery }) =>
   );
 };
 
-export default SearchBar;
+export { SearchBar}

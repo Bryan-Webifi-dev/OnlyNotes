@@ -1,5 +1,7 @@
-// src/components/NoteModal.tsx
-
+/**
+ * @module NoteModal
+ * @description Modal for adding and editing notes
+ */
 import React from 'react';
 import {
   Modal,
@@ -10,8 +12,22 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import NoteForm from './NoteForm';
+import { NoteForm } from '../notes';
 
+/**
+ * @typedef NoteModalProps
+ * @property {string[]} categories - The list of categories
+ * @property {string[]} folders - The list of folders
+ * @property {(note: string, category: string, tags: string[], folder: string) => void} saveNote - Function to save a note
+ * @property {(note: string, category: string, tags: string[], folder: string) => void} updateNote - Function to update a note
+ * @property {() => void} deleteNote - Function to delete a note
+ * @property {string} [note=''] - The note text
+ * @property {string} [category=''] - The category
+ * @property {string[]} [tags=[]] - The tags
+ * @property {string} [folder=''] - The folder
+ * @property {boolean} isOpen - Whether the modal is open
+ * @property {() => void} onClose - Function to close the modal
+ */
 type NoteModalProps = {
   categories: string[];
   folders: string[];
@@ -26,6 +42,10 @@ type NoteModalProps = {
   onClose: () => void;
 };
 
+/**
+ * Modal for adding and editing notes
+ * @param {NoteModalProps} props - The component properties
+ */
 const NoteModal: React.FC<NoteModalProps> = ({
   categories,
   folders,
@@ -73,4 +93,4 @@ const NoteModal: React.FC<NoteModalProps> = ({
   );
 };
 
-export default NoteModal;
+export { NoteModal };

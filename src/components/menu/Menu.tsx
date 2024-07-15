@@ -1,3 +1,7 @@
+/**
+ * @module Menu
+ * @description Component for the menu
+ */
 import React, { useState } from 'react';
 import {
   Drawer,
@@ -17,6 +21,16 @@ import {
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 
+/**
+ * @typedef MenuProps
+ * @property {string[]} categories - The list of categories
+ * @property {(category: string) => void} addCategory - Function to add a category
+ * @property {(index: number) => void} removeCategory - Function to remove a category
+ * @property {string[]} folders - The list of folders
+ * @property {(folder: string) => void} addFolder - Function to add a folder
+ * @property {(index: number) => void} removeFolder - Function to remove a folder
+ * @returns {JSX.Element}
+ */
 type MenuProps = {
   categories: string[];
   addCategory: (category: string) => void;
@@ -26,6 +40,10 @@ type MenuProps = {
   removeFolder: (index: number) => void;
 };
 
+/**
+ * Component for the menu
+ * @param {MenuProps} props - The component properties
+ */
 const Menu: React.FC<MenuProps> = ({ categories, addCategory, removeCategory, folders, addFolder, removeFolder }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [newCategory, setNewCategory] = useState('');
@@ -144,4 +162,4 @@ const Menu: React.FC<MenuProps> = ({ categories, addCategory, removeCategory, fo
   );
 };
 
-export default Menu;
+export { Menu };

@@ -2,6 +2,9 @@
 
 OnlyNotes is a powerful, user-friendly Chrome extension designed to help you organize your thoughts seamlessly. With features like category and folder management, tag selection, and a clean UI, OnlyNotes makes note-taking and organization effortless.
 
+### Status: 
+🚧 **In-development**
+
 ## Table of Contents
 
 - [Features](#features)

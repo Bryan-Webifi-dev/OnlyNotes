@@ -10,7 +10,7 @@ import { getStorageData, setStorageData } from '../utils/storage';
  * @returns {object} - The notes state and functions to save, update, and remove notes
  */
 const useNotes = () => {
-  const [notes, setNotes] = useState<{ note: string; category: string; timestamp: string; tags: string[]; folder: string }[]>([]);
+  const [notes, setNotes] = useState<{ note: string; timestamp: string; tags: string[]; folder: string }[]>([]);
 
   useEffect(() => {
     getStorageData('notes', (data) => {
@@ -18,26 +18,26 @@ const useNotes = () => {
     });
   }, []);
 
-  const saveNote = (note: string, category: string, tags: string[], folder: string) => {
+  const saveNote = (note: string, tags: string[], folder: string) => {
     const timestamp = new Date().toLocaleString();
-    const updatedNotes = [...notes, { note, category, timestamp, tags, folder }];
+    const updatedNotes = [...notes, { note, timestamp, tags, folder }];
     setNotes(updatedNotes);
     setStorageData('notes', updatedNotes);
   };
 
-  const updateNote = (note: string, category: string, tags: string[], folder: string) => {
+  const updateNote = (note: string, tags: string[], folder: string) => {
     const updatedNotes = notes.map((n) =>
-      n.note === note && n.category === category && JSON.stringify(n.tags) === JSON.stringify(tags) && n.folder === folder
-        ? { ...n, note, category, tags, folder }
+      n.note === note && JSON.stringify(n.tags) === JSON.stringify(tags) && n.folder === folder
+        ? { ...n, note, tags, folder }
         : n
     );
     setNotes(updatedNotes);
     setStorageData('notes', updatedNotes);
   };
 
-  const removeNote = (note: string, category: string, tags: string[], folder: string) => {
+  const removeNote = (note: string, tags: string[], folder: string) => {
     const updatedNotes = notes.filter(n =>
-      !(n.note === note && n.category === category && JSON.stringify(n.tags) === JSON.stringify(tags) && n.folder === folder)
+      !(n.note === note && JSON.stringify(n.tags) === JSON.stringify(tags) && n.folder === folder)
     );
     setNotes(updatedNotes);
     setStorageData('notes', updatedNotes);
@@ -46,4 +46,4 @@ const useNotes = () => {
   return { notes, saveNote, updateNote, removeNote };
 };
 
-export { useNotes};
+export { useNotes };

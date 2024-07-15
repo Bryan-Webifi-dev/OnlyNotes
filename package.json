@@ -4,9 +4,9 @@
   "description": "Organize Your Thoughts Seamlessly",
   "main": "index.js",
   "scripts": {
-  "build": "tsc && webpack --mode production",
-  "start": "webpack serve --mode development --open"
-},
+    "build": "tsc && webpack --mode production",
+    "start": "webpack serve --mode development --open"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -23,6 +23,8 @@
     "@types/chrome": "^0.0.148",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "css-loader": "^7.1.2",
+    "style-loader": "^4.0.0",
     "ts-loader": "^9.3.1",
     "typescript": "^4.7.4",
     "webpack": "^5.73.0",

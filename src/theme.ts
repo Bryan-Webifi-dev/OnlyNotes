@@ -4,9 +4,9 @@
  * @see https://chakra-ui.com/docs/theming/customize-theme
  */
 
-import { extendTheme, ThemeConfig } from '@chakra-ui/react';
+import { extendTheme } from '@chakra-ui/react';
 
-const config: ThemeConfig = {
+const config = {
   initialColorMode: 'light',
   useSystemColorMode: false,
 };
@@ -14,3 +14,4 @@ const config: ThemeConfig = {
 const theme = extendTheme({ config });
 
 export default theme;
+

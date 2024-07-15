@@ -1,32 +1,35 @@
-/*********************************************************************
- * @module Popup
- * @author Bryan Shea
- * @version 1.0.0
- *********************************************************************/
-import React from 'react';
-import { ChakraProvider, Box, Heading, Stack, Button, Wrap, Tag } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { ChakraProvider, Box, Heading, Stack, IconButton, Wrap, Tag, Tooltip } from '@chakra-ui/react';
+import { NoteList, NoteModal, Settings, Menu, Task, CustomTabs, FolderModal } from 'components';
+import { FiFilePlus, FiFolderPlus } from "react-icons/fi";
 import theme from '../theme';
-import { NoteList, NoteModal, SearchBar, Settings, Menu } from 'components';
 import { usePopup } from 'hooks';
-/**
- * Popup component
- * @return {React.FC} Popup component
- */
 const Popup = () => {
-    const { categories, addCategory, removeCategory, folders, addFolder, removeFolder, notes, saveNote, updateNote, removeNote, size, colorMode, changeSize, toggleColorMode, searchQuery, setSearchQuery, selectedTags, toggleTagSelection, filteredNotes, handleNoteClick, handleCreateNote, selectedNote, isOpen, onOpen, onClose, isCreating, } = usePopup();
+    const { folders, addFolder, notes, saveNote, updateNote, removeNote, tasks, size, changeSize, selectedTags, toggleTagSelection, filteredNotes, handleNoteClick, handleCreateNote, selectedNote, isOpen, onClose, isCreating, } = usePopup();
+    const [currentTab, setCurrentTab] = useState('notes');
+    const [isFolderModalOpen, setFolderModalOpen] = useState(false);
     return (React.createElement(ChakraProvider, { theme: theme },
-        React.createElement(Box, { padding: 4, width: size.width, height: size.height, minWidth: "400px", minHeight: "600px" },
-            React.createElement(Stack, { direction: "row", alignItems: "center", justifyContent: "space-between" },
-                React.createElement(Heading, { size: "md", marginBottom: 4 }, "OnlyNotes"),
-                React.createElement(Stack, { direction: "row", spacing: 4, marginBottom: 4 },
-                    React.createElement(Settings, { changeSize: changeSize, toggleColorMode: toggleColorMode, colorMode: colorMode }),
-                    React.createElement(Button, { onClick: handleCreateNote, colorScheme: "blue", size: "sm" }, "Create Note"),
-                    React.createElement(Menu, { categories: categories, addCategory: addCategory, removeCategory: removeCategory, folders: folders, addFolder: addFolder, removeFolder: removeFolder }))),
-            React.createElement(SearchBar, { searchQuery: searchQuery, setSearchQuery: setSearchQuery }),
-            React.createElement(Wrap, { spacing: 2, marginTop: 4 }, Array.from(new Set(notes.flatMap(note => note.tags))).map(tag => (React.createElement(Tag, { key: tag, size: "sm", borderRadius: "full", variant: "solid", colorScheme: selectedTags.includes(tag) ? "blue" : "gray", cursor: "pointer", onClick: () => toggleTagSelection(tag) }, tag)))),
-            React.createElement(Box, { marginTop: 4 },
-                React.createElement(NoteList, { notes: filteredNotes, onNoteClick: handleNoteClick })),
-            React.createElement(NoteModal, { categories: categories, folders: folders, saveNote: saveNote, updateNote: updateNote, deleteNote: () => removeNote(selectedNote.note, selectedNote.category, selectedNote.tags, selectedNote.folder), note: selectedNote === null || selectedNote === void 0 ? void 0 : selectedNote.note, category: selectedNote === null || selectedNote === void 0 ? void 0 : selectedNote.category, tags: selectedNote === null || selectedNote === void 0 ? void 0 : selectedNote.tags, folder: selectedNote === null || selectedNote === void 0 ? void 0 : selectedNote.folder, isOpen: isOpen, onClose: onClose }),
-            isCreating && (React.createElement(NoteModal, { categories: categories, folders: folders, saveNote: saveNote, updateNote: updateNote, deleteNote: () => { }, isOpen: isOpen, onClose: onClose })))));
+        React.createElement(Box, { padding: 3, width: size.width, height: size.height, minWidth: "400px", borderRadius: "md" },
+            React.createElement(Stack, { direction: "row", alignItems: "stretch", justifyContent: "space-between", w: "100%" },
+                React.createElement(Stack, { direction: "row", spacing: 6, alignItems: "center", justifyContent: "space-between", w: "100%" },
+                    React.createElement(Stack, { direction: "row", alignItems: "center", justifyContent: "flex-start", marginTop: 4 },
+                        React.createElement(CustomTabs, { currentTab: currentTab, onTabChange: setCurrentTab, noteCount: filteredNotes.length, taskCount: tasks.length })),
+                    React.createElement(Stack, { direction: "row", alignItems: "center", justifyContent: "flex-end", spacing: 4, marginBottom: 4 },
+                        React.createElement(Tooltip, { label: "Add folder", "aria-label": "Add folder" },
+                            React.createElement(IconButton, { "aria-label": "Add folder", icon: React.createElement(FiFolderPlus, null), onClick: () => setFolderModalOpen(true), variant: "outline" })),
+                        React.createElement(Tooltip, { label: "Add note", "aria-label": "Add note" },
+                            React.createElement(IconButton, { "aria-label": "Add note", icon: React.createElement(FiFilePlus, null), onClick: handleCreateNote, variant: "outline" })),
+                        React.createElement(Settings, { changeSize: changeSize }),
+                        React.createElement(Menu, { folders: folders })))),
+            currentTab === 'notes' && (React.createElement(React.Fragment, null,
+                React.createElement(Wrap, { spacing: 2, marginTop: 1 }, Array.from(new Set(notes.flatMap(note => note.tags))).map(tag => (React.createElement(Tag, { key: tag, size: "sm", borderRadius: "full", variant: "solid", colorScheme: selectedTags.includes(tag) ? "blue" : "gray", cursor: "pointer", onClick: () => toggleTagSelection(tag) }, tag)))),
+                React.createElement(Box, { marginTop: 1 },
+                    React.createElement(NoteList, { notes: filteredNotes, onNoteClick: handleNoteClick })),
+                React.createElement(NoteModal, { folders: folders, saveNote: saveNote, updateNote: updateNote, deleteNote: () => removeNote(selectedNote.note, selectedNote.tags, selectedNote.folder), note: selectedNote === null || selectedNote === void 0 ? void 0 : selectedNote.note, tags: selectedNote === null || selectedNote === void 0 ? void 0 : selectedNote.tags, folder: selectedNote === null || selectedNote === void 0 ? void 0 : selectedNote.folder, isOpen: isOpen, onClose: onClose }),
+                isCreating && (React.createElement(NoteModal, { folders: folders, saveNote: saveNote, updateNote: updateNote, deleteNote: () => { }, isOpen: isOpen, onClose: onClose })))),
+            currentTab === 'tasks' && (React.createElement(Task, { tasks: tasks })),
+            React.createElement(FolderModal, { addFolder: addFolder, isOpen: isFolderModalOpen, onClose: () => setFolderModalOpen(false) }),
+            React.createElement(Box, { position: "fixed", bottom: 4, right: 2, color: "gray.500", bg: "whiteAlpha.900", width: "auto", textAlign: "right", zIndex: 999, px: 2 },
+                React.createElement(Heading, { size: "sm" }, "OnlyNotes")))));
 };
 export default Popup;

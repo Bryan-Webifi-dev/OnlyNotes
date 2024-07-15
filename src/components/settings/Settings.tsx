@@ -3,7 +3,7 @@
  * @description Component for the settings menu
  */
 import React from 'react';
-import { Menu as ChakraMenu, MenuButton, MenuList, MenuItem, MenuDivider, IconButton } from '@chakra-ui/react';
+import { Menu as ChakraMenu, MenuButton, MenuList, MenuItem, Tooltip, MenuGroup, IconButton } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 
 /**
@@ -14,8 +14,6 @@ import { SettingsIcon } from '@chakra-ui/icons';
  */
 type SettingsProps = {
   changeSize: (width: string, height: string) => void;
-  toggleColorMode: () => void;
-  colorMode: string;
 };
 
 /**
@@ -23,20 +21,21 @@ type SettingsProps = {
  * @param {SettingsProps} props - The props for the component
  * @return {React.FC} Settings component
  */
-const Settings: React.FC<SettingsProps> = ({ changeSize, toggleColorMode, colorMode }) => {
+const Settings: React.FC<SettingsProps> = ({ changeSize }) => {
   return (
     <ChakraMenu>
-      <MenuButton as={IconButton} icon={<SettingsIcon />} variant="outline" size="sm" />
+      <Tooltip label="Settings" aria-label="Settings">
+      <MenuButton as={IconButton} icon={<SettingsIcon />} variant="outline" />
+      </Tooltip>
       <MenuList>
-        <MenuItem onClick={() => changeSize('600px', '800px')}>Option 1: 600x800</MenuItem>
-        <MenuItem onClick={() => changeSize('800px', '1000px')}>Option 2: 800x1000</MenuItem>
-        <MenuDivider />
-        <MenuItem onClick={toggleColorMode}>
-          Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-        </MenuItem>
+        <MenuGroup title="Size">
+          <MenuItem onClick={() => changeSize('600px', '600px')}>Default</MenuItem>
+          <MenuItem onClick={() => changeSize('800px', '600px')}>Wide</MenuItem>
+        </MenuGroup>
       </MenuList>
     </ChakraMenu>
   );
 };
 
 export { Settings };
+

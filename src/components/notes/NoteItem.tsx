@@ -8,7 +8,6 @@ import { Box, Text, Stack, Badge, Wrap, Tag } from '@chakra-ui/react';
 /**
  * @typedef NoteItemProps
  * @property {string} note - The note text
- * @property {string} category - The category
  * @property {string} timestamp - The timestamp
  * @property {string[]} tags - The tags
  * @property {string} folder - The folder
@@ -17,7 +16,6 @@ import { Box, Text, Stack, Badge, Wrap, Tag } from '@chakra-ui/react';
  */
 type NoteItemProps = {
   note: string;
-  category: string;
   timestamp: string;
   tags: string[];
   folder: string;
@@ -28,11 +26,12 @@ type NoteItemProps = {
  * A single note item
  * @param {NoteItemProps} props - The component properties
  */
-const NoteItem: React.FC<NoteItemProps> = ({ note, category, timestamp, tags, folder, onClick }) => {
+const NoteItem: React.FC<NoteItemProps> = ({ note, timestamp, tags, folder, onClick }) => {
   return (
-    <Box borderWidth="1px" borderColor="gray.300" borderRadius="lg" padding={4} boxShadow="md" onClick={onClick} cursor="pointer">
+    <Box borderWidth="1px" borderColor="gray.300" borderRadius="lg" padding={4} boxShadow="md" onClick={onClick} cursor="pointer"
+      _hover={{ borderColor: 'gray.500', boxShadow: 'lg' }}
+    >
       <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Badge colorScheme="green">{category}</Badge>
         <Badge colorScheme="purple">{folder}</Badge>
       </Stack>
       <Text marginTop={2}>{note}</Text>
@@ -49,4 +48,5 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, category, timestamp, tags, fo
 };
 
 export { NoteItem };
+
 

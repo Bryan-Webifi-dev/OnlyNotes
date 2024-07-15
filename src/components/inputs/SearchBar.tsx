@@ -24,13 +24,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery }) =>
   return (
     <InputGroup
       size="sm"
+      width="200px"
     >
       <InputLeftElement pointerEvents="none">
         <SearchIcon color="gray.300" />
       </InputLeftElement>
       <Input
         type="text"
-        placeholder="Search notes..."
+        placeholder="Search..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         bg="white"

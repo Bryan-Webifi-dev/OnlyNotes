@@ -1,3 +1,4 @@
 import { NoteModal } from './NoteModal';
+import { FolderModal } from './FolderModal';
 
-export { NoteModal };
+export { NoteModal, FolderModal };

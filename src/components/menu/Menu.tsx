@@ -4,28 +4,26 @@
  */
 import React from 'react';
 import {
-  Drawer,
-  DrawerBody,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
+  Menu as ChakraMenu,
+  MenuButton,
+  MenuList,
+  MenuItem,
   Tooltip,
   IconButton,
-  useDisclosure,
   Box,
   VStack,
   Text,
+  Select,
 } from '@chakra-ui/react';
 import { ThemeToggle } from '../inputs/ThemeToggle';
 import { FiList } from "react-icons/fi";
 
 /**
  * @typedef MenuProps
- * @property {string[]} folders - List of folders
+ * @property {Function} changeSize - Function to change the size of the popup
  */
 type MenuProps = {
-  folders: string[];
+  changeSize: (width: string, height: string) => void;
 };
 
 /**
@@ -33,48 +31,29 @@ type MenuProps = {
  * @param {MenuProps} props - The props for the component
  * @return {React.FC} Menu component
  */
-const Menu: React.FC<MenuProps> = ({ folders }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+const Menu: React.FC<MenuProps> = ({ changeSize }) => {
   return (
-    <>
+    <ChakraMenu>
       <Tooltip label="Preferences" aria-label="Preferences">
-        <IconButton
-          aria-label="Preferences"
-          icon={<FiList />}
-          onClick={onOpen}
-          variant="outline"
-        />
+        <MenuButton as={IconButton} icon={<FiList />} variant="outline" />
       </Tooltip>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-        <DrawerOverlay>
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>Preferences</DrawerHeader>
-            <DrawerBody>
-              <VStack align="stretch" spacing={4}>
-                <Box>
-                  <Text fontWeight="bold" mb={2}>Theme</Text>
-                  <ThemeToggle />
-                </Box>
-                <Box>
-                  <Text fontWeight="bold" mb={2}>Folders</Text>
-                  {folders.length === 0 ? (
-                    <Text color="gray.500">No folders available.</Text>
-                  ) : (
-                    folders.map((folder, index) => (
-                      <Text key={index}>{folder}</Text>
-                    ))
-                  )}
-                </Box>
-              </VStack>
-            </DrawerBody>
-          </DrawerContent>
-        </DrawerOverlay>
-      </Drawer>
-    </>
+      <MenuList>
+        <VStack align="stretch" spacing={4} p={4}>
+          <Box>
+            <Text fontWeight="bold" mb={2}>Theme</Text>
+            <ThemeToggle />
+          </Box>
+          <Box>
+            <Text fontWeight="bold" mb={2}>Size</Text>
+            <Select onChange={(e) => changeSize(e.target.value.split('x')[0] + 'px', e.target.value.split('x')[1] + 'px')} placeholder="Select size">
+              <option value="600x600">Default</option>
+              <option value="800x600">Wide</option>
+            </Select>
+          </Box>
+        </VStack>
+      </MenuList>
+    </ChakraMenu>
   );
 };
 
 export { Menu };
-

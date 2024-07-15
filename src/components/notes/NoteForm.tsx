@@ -3,26 +3,24 @@
  * @description Form for creating and updating notes
  */
 import React, { useState, useEffect } from 'react';
-import { Box, Button, ButtonGroup, useColorModeValue, Textarea, Select, FormControl, FormLabel, useToast } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, useColorModeValue, Textarea, FormControl, FormLabel, useToast } from '@chakra-ui/react';
 import { TagInput } from '../inputs';
 
 /**
  * @typedef NoteFormProps
- * @property {string[]} folders - The list of folders
- * @property {(note: string, tags: string[], folder: string) => void} saveNote - Function to save a note
+ * @property {(note: string, tags: string[]) => void} saveNote - Function to save a note
+ * @property {(oldNote: string, newNote: string, tags: string[]) => void} updateNote - Function to update a note
  * @property {string} [note=''] - The note text
  * @property {string[]} [tags=[]] - The tags
- * @property {string} [folder=''] - The folder
  * @property {() => void} onClose - Function to close the form
  * @property {() => void} [deleteNote] - Function to delete the note
  * @returns {JSX.Element}
  */
 type NoteFormProps = {
-  folders: string[];
-  saveNote: (note: string, tags: string[], folder: string) => void;
+  saveNote: (note: string, tags: string[]) => void;
+  updateNote: (oldNote: string, newNote: string, tags: string[]) => void;
   note?: string;
   tags?: string[];
-  folder?: string;
   onClose: () => void;
   deleteNote?: () => void;
 };
@@ -32,27 +30,23 @@ type NoteFormProps = {
  * @param {NoteFormProps} props - The component properties
  * @returns {JSX.Element}
  */
-const NoteForm: React.FC<NoteFormProps> = ({ folders, saveNote, note = '', tags = [], folder = '', onClose, deleteNote }) => {
+const NoteForm: React.FC<NoteFormProps> = ({ saveNote, updateNote, note = '', tags = [], onClose, deleteNote }) => {
   const [noteText, setNoteText] = useState(note);
   const [noteTags, setNoteTags] = useState<string[]>(tags);
-  const [selectedFolder, setSelectedFolder] = useState(folder);
   const toast = useToast();
-
-  useEffect(() => {
-    if (folders.length > 0 && !folder) {
-      setSelectedFolder(folders[0]);
-    }
-  }, [folders, folder]);
 
   useEffect(() => {
     setNoteText(note);
     setNoteTags(tags);
-    setSelectedFolder(folder);
-  }, [note, tags, folder]);
+  }, [note, tags]);
 
-  const handleSaveNote = () => {
-    if (noteText.trim() && selectedFolder) {
-      saveNote(noteText.trim(), noteTags, selectedFolder);
+  const handleSaveOrUpdateNote = () => {
+    if (noteText.trim()) {
+      if (note) {
+        updateNote(note, noteText.trim(), noteTags);
+      } else {
+        saveNote(noteText.trim(), noteTags);
+      }
       toast({
         title: note ? 'Note updated.' : 'Note saved.',
         status: 'success',
@@ -80,14 +74,6 @@ const NoteForm: React.FC<NoteFormProps> = ({ folders, saveNote, note = '', tags 
 
   return (
     <Box>
-      <FormControl marginTop={1}>
-        <FormLabel>Folder</FormLabel>
-        <Select value={selectedFolder} onChange={(e) => setSelectedFolder(e.target.value)} boxShadow="md" size="sm">
-          {folders.map((folder, index) => (
-            <option key={index} value={folder} color="black">{folder}</option>
-          ))}
-        </Select>
-      </FormControl>
       <FormControl marginTop={2}>
         <FormLabel>Note</FormLabel>
         <Textarea
@@ -109,7 +95,7 @@ const NoteForm: React.FC<NoteFormProps> = ({ folders, saveNote, note = '', tags 
         display="flex"
         justifyContent="flex-end"
       >
-        <Button onClick={handleSaveNote} colorScheme="blue" marginTop={2} size="sm">
+        <Button onClick={handleSaveOrUpdateNote} colorScheme="blue" marginTop={2} size="sm">
           {note ? 'Update Note' : 'Save Note'}
         </Button>
         {note && (

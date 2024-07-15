@@ -10,7 +10,7 @@ import { getStorageData, setStorageData } from '../utils/storage';
  * @returns {object} - The notes state and functions to save, update, and remove notes
  */
 const useNotes = () => {
-  const [notes, setNotes] = useState<{ note: string; timestamp: string; tags: string[]; folder: string }[]>([]);
+  const [notes, setNotes] = useState<{ note: string; timestamp: string; tags: string[] }[]>([]);
 
   useEffect(() => {
     getStorageData('notes', (data) => {
@@ -18,26 +18,24 @@ const useNotes = () => {
     });
   }, []);
 
-  const saveNote = (note: string, tags: string[], folder: string) => {
+  const saveNote = (note: string, tags: string[]) => {
     const timestamp = new Date().toLocaleString();
-    const updatedNotes = [...notes, { note, timestamp, tags, folder }];
+    const updatedNotes = [...notes, { note, timestamp, tags }];
     setNotes(updatedNotes);
     setStorageData('notes', updatedNotes);
   };
 
-  const updateNote = (note: string, tags: string[], folder: string) => {
+  const updateNote = (oldNote: string, newNote: string, tags: string[]) => {
     const updatedNotes = notes.map((n) =>
-      n.note === note && JSON.stringify(n.tags) === JSON.stringify(tags) && n.folder === folder
-        ? { ...n, note, tags, folder }
-        : n
+      n.note === oldNote ? { ...n, note: newNote, tags } : n
     );
     setNotes(updatedNotes);
     setStorageData('notes', updatedNotes);
   };
 
-  const removeNote = (note: string, tags: string[], folder: string) => {
+  const removeNote = (note: string, tags: string[]) => {
     const updatedNotes = notes.filter(n =>
-      !(n.note === note && JSON.stringify(n.tags) === JSON.stringify(tags) && n.folder === folder)
+      !(n.note === note && JSON.stringify(n.tags) === JSON.stringify(tags))
     );
     setNotes(updatedNotes);
     setStorageData('notes', updatedNotes);

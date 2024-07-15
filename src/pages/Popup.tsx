@@ -1,14 +1,19 @@
+/*********************************************************************
+ * @module Popup
+ * @version 1.0.0
+ *********************************************************************/
 import React, { useState } from 'react';
-import { ChakraProvider, Box, Heading, Stack, Button, IconButton, Wrap, Tag, Tooltip } from '@chakra-ui/react';
-import { NoteList, NoteModal, Settings, Menu, Task, CustomTabs, FolderModal } from 'components';
-import { FiFilePlus, FiFolderPlus } from "react-icons/fi";
+import { ChakraProvider, Box, Heading, Stack, Button, Wrap, Tag } from '@chakra-ui/react';
 import theme from '../theme';
+import { NoteList, NoteModal, Menu, Task, CustomTabs, SearchBar } from 'components';
 import { usePopup } from 'hooks';
 
+/**
+ * Popup component
+ * @return {React.FC} Popup component
+ */
 const Popup: React.FC = () => {
   const {
-    folders,
-    addFolder,
     notes,
     saveNote,
     updateNote,
@@ -27,7 +32,6 @@ const Popup: React.FC = () => {
     isCreating,
   } = usePopup();
   const [currentTab, setCurrentTab] = useState<string>('notes');
-  const [isFolderModalOpen, setFolderModalOpen] = useState<boolean>(false);
 
   return (
     <ChakraProvider theme={theme}>
@@ -54,24 +58,12 @@ const Popup: React.FC = () => {
               spacing={4}
               marginBottom={4}
             >
-              <Tooltip label="Add folder" aria-label="Add folder">
-                <IconButton
-                  aria-label="Add folder"
-                  icon={<FiFolderPlus />}
-                  onClick={() => setFolderModalOpen(true)}
-                  variant="outline"
-                />
-              </Tooltip>
-              <Tooltip label="Add note" aria-label="Add note">
-                <IconButton
-                  aria-label="Add note"
-                  icon={<FiFilePlus />}
-                  onClick={handleCreateNote}
-                  variant="outline"
-                />
-              </Tooltip>
-              <Settings changeSize={changeSize} />
-              <Menu folders={folders} />
+              <Button onClick={handleCreateNote} colorScheme="blue" size="sm">
+                Create Note
+              </Button>
+              <Menu 
+                changeSize={changeSize}
+              />
             </Stack>
           </Stack>
         </Stack>
@@ -96,21 +88,18 @@ const Popup: React.FC = () => {
               <NoteList notes={filteredNotes} onNoteClick={handleNoteClick} />
             </Box>
             <NoteModal
-              folders={folders}
               saveNote={saveNote}
-              updateNote={updateNote}
-              deleteNote={() => removeNote(selectedNote!.note, selectedNote!.tags, selectedNote!.folder)}
+              updateNote={(oldNote, newNote, tags) => updateNote(oldNote, newNote, tags)}
+              deleteNote={() => removeNote(selectedNote!.note, selectedNote!.tags)}
               note={selectedNote?.note}
               tags={selectedNote?.tags}
-              folder={selectedNote?.folder}
               isOpen={isOpen}
               onClose={onClose}
             />
             {isCreating && (
               <NoteModal
-                folders={folders}
                 saveNote={saveNote}
-                updateNote={updateNote}
+                updateNote={(oldNote, newNote, tags) => updateNote(oldNote, newNote, tags)}
                 deleteNote={() => {}}
                 isOpen={isOpen}
                 onClose={onClose}
@@ -121,23 +110,14 @@ const Popup: React.FC = () => {
         {currentTab === 'tasks' && (
           <Task tasks={tasks} />
         )}
-        <FolderModal
-          addFolder={addFolder}
-          isOpen={isFolderModalOpen}
-          onClose={() => setFolderModalOpen(false)}
-        />
         <Box
-          position="fixed"
+          position="absolute"
           bottom={4}
-          right={2}
+          left={4}
           color="gray.500"
-          bg="whiteAlpha.900"
-          width="auto"
-          textAlign="right"
-          zIndex={999}
-          px={2}
+          textAlign="left"
         >
-          <Heading size="sm">OnlyNotes</Heading>
+          <Heading size="md">OnlyNotes</Heading>
         </Box>
       </Box>
     </ChakraProvider>

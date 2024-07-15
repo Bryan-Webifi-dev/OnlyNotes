@@ -8,13 +8,13 @@ import { NoteItem } from './NoteItem';
 
 /**
  * @typedef NoteListProps
- * @property {{ note: string; timestamp: string; tags: string[]; folder: string }[]} notes - The list of notes
- * @property {(note: string, tags: string[], folder: string) => void} onNoteClick - Function to handle note click event
+ * @property {{ note: string; timestamp: string; tags: string[] }[]} notes - The list of notes
+ * @property {(note: string, tags: string[]) => void} onNoteClick - Function to handle note click event
  * @returns {JSX.Element}
  */
 type NoteListProps = {
-  notes: { note: string; timestamp: string; tags: string[]; folder: string }[];
-  onNoteClick: (note: string, tags: string[], folder: string) => void;
+  notes: { note: string; timestamp: string; tags: string[] }[];
+  onNoteClick: (note: string, tags: string[]) => void;
 };
 
 /**
@@ -27,17 +27,14 @@ const NoteList: React.FC<NoteListProps> = ({ notes, onNoteClick }) => {
   }
 
   return (
-    <SimpleGrid columns={2} spacing={4} 
-      p="6"
-    >
+    <SimpleGrid columns={2} spacing={4} p="6">
       {notes.map((note, index) => (
         <NoteItem
           key={index}
           note={note.note}
           timestamp={note.timestamp}
           tags={note.tags}
-          folder={note.folder}
-          onClick={() => onNoteClick(note.note, note.tags, note.folder)}
+          onClick={() => onNoteClick(note.note, note.tags)}
         />
       ))}
     </SimpleGrid>

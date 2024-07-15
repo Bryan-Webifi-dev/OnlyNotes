@@ -4,21 +4,20 @@
  */
 import { useState } from 'react';
 import { useDisclosure } from '@chakra-ui/react';
-import { useFolders, useNotes, useTask, useUIState } from './';
+import { useNotes, useTask, useUIState } from './';
 
 /**
  * Custom hook for managing popup state
  * @returns {object} - The popup state
  */
 const usePopup = () => {
-  const { folders, addFolder, removeFolder } = useFolders();
   const { notes, saveNote, updateNote, removeNote } = useNotes();
   const initialTasks = []; // Define an initial state for tasks
   const { tasks } = useTask(initialTasks);
   const { size, colorMode, changeSize, toggleColorMode } = useUIState();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [selectedNote, setSelectedNote] = useState<{ note: string; tags: string[]; folder: string } | null>(null);
+  const [selectedNote, setSelectedNote] = useState<{ note: string; tags: string[] } | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -31,13 +30,12 @@ const usePopup = () => {
   };
 
   const filteredNotes = notes.filter(note =>
-    (note.note.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      note.folder.toLowerCase().includes(searchQuery.toLowerCase())) &&
+    note.note.toLowerCase().includes(searchQuery.toLowerCase()) &&
     (selectedTags.length === 0 || selectedTags.every(tag => note.tags.includes(tag)))
   );
 
-  const handleNoteClick = (note: string, tags: string[], folder: string) => {
-    setSelectedNote({ note, tags, folder });
+  const handleNoteClick = (note: string, tags: string[]) => {
+    setSelectedNote({ note, tags });
     setIsCreating(false);
     onOpen();
   };
@@ -49,9 +47,6 @@ const usePopup = () => {
   };
 
   return {
-    folders,
-    addFolder,
-    removeFolder,
     notes,
     saveNote,
     updateNote,

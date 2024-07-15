@@ -16,24 +16,20 @@ import { NoteForm } from '../notes';
 
 /**
  * @typedef NoteModalProps
- * @property {string[]} folders - The list of folders
- * @property {(note: string, tags: string[], folder: string) => void} saveNote - Function to save a note
- * @property {(note: string, tags: string[], folder: string) => void} updateNote - Function to update a note
+ * @property {(note: string, tags: string[]) => void} saveNote - Function to save a note
+ * @property {(oldNote: string, newNote: string, tags: string[]) => void} updateNote - Function to update a note
  * @property {() => void} deleteNote - Function to delete a note
  * @property {string} [note=''] - The note text
  * @property {string[]} [tags=[]] - The tags
- * @property {string} [folder=''] - The folder
  * @property {boolean} isOpen - Whether the modal is open
  * @property {() => void} onClose - Function to close the modal
  */
 type NoteModalProps = {
-  folders: string[];
-  saveNote: (note: string, tags: string[], folder: string) => void;
-  updateNote: (note: string, tags: string[], folder: string) => void;
+  saveNote: (note: string, tags: string[]) => void;
+  updateNote: (oldNote: string, newNote: string, tags: string[]) => void;
   deleteNote: () => void;
   note?: string;
   tags?: string[];
-  folder?: string;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -43,21 +39,19 @@ type NoteModalProps = {
  * @param {NoteModalProps} props - The component properties
  */
 const NoteModal: React.FC<NoteModalProps> = ({
-  folders,
   saveNote,
   updateNote,
   deleteNote,
   note = '',
   tags = [],
-  folder = '',
   isOpen,
   onClose,
 }) => {
-  const handleSaveOrUpdate = (noteText: string, noteTags: string[], selectedFolder: string) => {
+  const handleSaveOrUpdate = (noteText: string, noteTags: string[]) => {
     if (note) {
-      updateNote(noteText, noteTags, selectedFolder);
+      updateNote(note, noteText, noteTags);
     } else {
-      saveNote(noteText, noteTags, selectedFolder);
+      saveNote(noteText, noteTags);
     }
   };
 
@@ -69,13 +63,12 @@ const NoteModal: React.FC<NoteModalProps> = ({
           <ModalCloseButton />
           <ModalBody>
             <NoteForm
-              folders={folders}
               saveNote={handleSaveOrUpdate}
+              updateNote={updateNote}
+              deleteNote={deleteNote}
               note={note}
               tags={tags}
-              folder={folder}
               onClose={onClose}
-              deleteNote={deleteNote}
             />
           </ModalBody>
           <ModalFooter />

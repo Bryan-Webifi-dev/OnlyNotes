@@ -1,7 +1,3 @@
-/**
- * @module Menu
- * @description Component for the configuration and preferences menu
- */
 import React from 'react';
 import {
   Menu as ChakraMenu,
@@ -18,42 +14,33 @@ import {
 import { ThemeToggle } from '../inputs/ThemeToggle';
 import { FiList } from "react-icons/fi";
 
-/**
- * @typedef MenuProps
- * @property {Function} changeSize - Function to change the size of the popup
- */
 type MenuProps = {
   changeSize: (width: string, height: string) => void;
 };
 
-/**
- * Menu component
- * @param {MenuProps} props - The props for the component
- * @return {React.FC} Menu component
- */
 const Menu: React.FC<MenuProps> = ({ changeSize }) => {
-  return (
-    <ChakraMenu>
-      <Tooltip label="Preferences" aria-label="Preferences">
-        <MenuButton as={IconButton} icon={<FiList />} variant="outline" />
-      </Tooltip>
-      <MenuList>
-        <VStack align="stretch" spacing={4} p={4}>
-          <Box>
-            <Text fontWeight="bold" mb={2}>Theme</Text>
-            <ThemeToggle />
-          </Box>
-          <Box>
-            <Text fontWeight="bold" mb={2}>Size</Text>
-            <Select onChange={(e) => changeSize(e.target.value.split('x')[0] + 'px', e.target.value.split('x')[1] + 'px')} placeholder="Select size">
-              <option value="600x600">Default</option>
-              <option value="800x600">Wide</option>
-            </Select>
-          </Box>
-        </VStack>
-      </MenuList>
-    </ChakraMenu>
-  );
+    return (
+        <ChakraMenu>
+            <Tooltip label="Preferences" aria-label="Preferences">
+                <MenuButton as={IconButton} icon={<FiList />} variant="outline" />
+            </Tooltip>
+            <MenuList>
+                <VStack align="stretch" spacing={4} p={4}>
+                    <Box>
+                        <Text fontWeight="bold" mb={2}>Theme</Text>
+                        <ThemeToggle />
+                    </Box>
+                    <Box>
+                        <Text fontWeight="bold" mb={2}>Size</Text>
+                        <Select onChange={(e) => changeSize(e.target.value.split('x')[0] + 'px', e.target.value.split('x')[1] + 'px')} placeholder="Select size">
+                        <option value="600x600">Default</option>
+                        <option value="800x600">Wide</option>
+                        </Select>
+                    </Box>
+                </VStack>
+            </MenuList>
+        </ChakraMenu>
+    );
 };
 
 export { Menu };
